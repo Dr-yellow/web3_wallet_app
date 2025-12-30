@@ -24,7 +24,6 @@ export default function NameWallet() {
   const router = useDebouncedNavigation();
   const insets = useSafeAreaInsets();
   const [privateKey, setPrivateKey] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
 
   const handleNext = useCallback(async () => {
     const walletId = `wallet_${Date.now()}`;
@@ -81,14 +80,11 @@ export default function NameWallet() {
           {/* 钱包名称输入 */}
           <View style={styles.inputSection}>
             <TextInput
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
               value={privateKey}
               onChangeText={setPrivateKey}
               style={[
                 styles.textArea,
                 { fontSize: privateKey.length > 20 ? 24 : 30 },
-                isFocused && styles.textAreaFocused,
               ]}
               placeholder="输入私钥"
               placeholderTextColor={grayScale[200]}
