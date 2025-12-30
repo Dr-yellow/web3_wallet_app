@@ -1,10 +1,13 @@
-import { ThemedView } from "@/components/themed-view";
+import { Page } from "@/components/page/Page";
+import { ThemedText } from "@/components/themed-text";
+import Touch from "@/components/ui/Touch";
+import { grayScale } from "@/constants/theme/base";
 import { useMultiChain } from "@/context/MultiChainContext";
 import { useDebouncedNavigation } from "@/hooks/use-debounced-navigation";
 import { getCurrentWalletData, saveWalletAccounts } from "@/utils/wallet";
 import { decryptMnemonic } from "@/utils/wallet/crypto-help";
 import { derivePrivateKey } from "@/utils/wallet/evm-wallet";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { mnemonicToSeedSync } from "@scure/bip39";
 import { Stack } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -13,11 +16,8 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
-  StatusBar,
   StyleSheet,
-  Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { privateKeyToAddress } from "viem/accounts";
@@ -36,23 +36,19 @@ const OptionCard: React.FC<OptionCardProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity
-      style={styles.optionCard}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
+    <Touch style={styles.optionCard} onPress={onPress}>
       <View style={styles.optionIconContainer}>
         <MaterialCommunityIcons name={icon as any} size={24} color="#FFFFFF" />
       </View>
       <View style={styles.optionContent}>
-        <Text style={styles.optionTitle}>{title}</Text>
-        <Text style={styles.optionDescription}>{description}</Text>
+        <ThemedText style={styles.optionTitle}>{title}</ThemedText>
+        <ThemedText style={styles.optionDescription}>{description}</ThemedText>
       </View>
-    </TouchableOpacity>
+    </Touch>
   );
 };
 
-export default function AddAcountScreen() {
+export default function HighSettingScreen() {
   const router = useDebouncedNavigation();
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +65,7 @@ export default function AddAcountScreen() {
     createAccount({ ethPath, tronPath });
   };
 
-  const handleImportCloudBackup = () => {
+  const handleOpenPathModal = () => {
     setModalVisible(true);
   };
 
@@ -79,6 +75,7 @@ export default function AddAcountScreen() {
     setChange("0");
     setAddressIndex("0");
   };
+
   const createAccount = async ({
     ethPath,
     tronPath,
@@ -133,10 +130,12 @@ export default function AddAcountScreen() {
       handlePasswordCancel();
     }
   };
+
   const handlePathConfirm = useCallback(() => {
     setLoading(true);
     if (!account || !change || !addressIndex) {
       Alert.alert("提示", "请输入完整的路径");
+      setLoading(false);
       return;
     }
     if (
@@ -145,6 +144,7 @@ export default function AddAcountScreen() {
       isNaN(Number(addressIndex))
     ) {
       Alert.alert("提示", "请输入正确的路径");
+      setLoading(false);
       return;
     }
     const accountNumber = parseInt(account);
@@ -153,42 +153,28 @@ export default function AddAcountScreen() {
 
     const ethPath = `m/44'/60'/${accountNumber}'/${changeNumber}/${addressIndexNumber}`;
     const tronPath = `m/44'/195'/${accountNumber}'/${changeNumber}/${addressIndexNumber}`;
-    console.log("ethPath", ethPath);
-    console.log("tronPath", tronPath);
     createAccount({ ethPath, tronPath, index: accountNumber });
   }, [setLoading, account, change, addressIndex]);
 
   return (
-    <ThemedView style={[styles.container]}>
+    <Page>
       <Stack.Screen
         options={{
           headerShown: true,
           title: "高级设置",
           headerTitleAlign: "center",
-          headerTintColor: "#fff",
-          headerStyle: {
-            backgroundColor: "#000",
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={styles.headerIcon}
-            >
-              <Ionicons name="chevron-back" size={28} color="#fff" />
-            </TouchableOpacity>
-          ),
         }}
       />
-      {/* 选项卡片列表 */}
+
       <View style={styles.optionsContainer}>
         <OptionCard
-          icon="cookie-settings"
+          icon="cog-outline"
           title="自定义路径"
           description="m/44'/coin_type'/0'/0/0"
-          onPress={handleImportCloudBackup}
+          onPress={handleOpenPathModal}
         />
         <OptionCard
-          icon="open-in-new"
+          icon="login-variant"
           title="快速前往账户"
           description="跳转到指定区块链账户"
           onPress={handleImportMnemonic}
@@ -198,7 +184,7 @@ export default function AddAcountScreen() {
       <Modal
         visible={modalVisible}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={handlePasswordCancel}
       >
         <KeyboardAvoidingView
@@ -207,50 +193,54 @@ export default function AddAcountScreen() {
         >
           <View style={styles.modalContent}>
             <View style={styles.modalBody}>
-              <Text style={styles.modalHint}>请输入账户路径</Text>
+              <ThemedText style={styles.modalHint}>请输入账户路径</ThemedText>
 
               <View style={styles.pathContainer}>
-                <Text style={styles.pathText}>m/44'/coin_type'/</Text>
+                <ThemedText style={styles.pathText}>
+                  m/44'/coin_type'/
+                </ThemedText>
                 <TextInput
                   style={styles.pathInput}
                   value={account}
                   onChangeText={setAccount}
                   placeholder="account"
-                  placeholderTextColor="#666666"
+                  placeholderTextColor={grayScale[300]}
                   keyboardType="numeric"
                   autoFocus
                   maxLength={3}
                 />
-                <Text style={styles.pathText}>/ </Text>
+                <ThemedText style={styles.pathText}>/ </ThemedText>
                 <TextInput
                   style={styles.pathInput}
                   value={change}
                   onChangeText={setChange}
                   placeholder="change"
-                  placeholderTextColor="#666666"
+                  placeholderTextColor={grayScale[300]}
                   keyboardType="numeric"
                   maxLength={3}
                 />
-                <Text style={styles.pathText}> / </Text>
+                <ThemedText style={styles.pathText}> / </ThemedText>
                 <TextInput
                   style={styles.pathInput}
                   value={addressIndex}
                   onChangeText={setAddressIndex}
                   placeholder="address_index"
-                  placeholderTextColor="#666666"
+                  placeholderTextColor={grayScale[300]}
                   keyboardType="numeric"
                   maxLength={3}
                 />
               </View>
 
               <View style={styles.modalButtons}>
-                <TouchableOpacity
+                <Touch
                   style={[styles.modalButton, styles.modalButtonCancel]}
                   onPress={handlePasswordCancel}
                 >
-                  <Text style={styles.modalButtonCancelText}>取消</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  <ThemedText style={styles.modalButtonCancelText}>
+                    取消
+                  </ThemedText>
+                </Touch>
+                <Touch
                   style={[
                     styles.modalButton,
                     styles.modalButtonConfirm,
@@ -258,118 +248,102 @@ export default function AddAcountScreen() {
                   ]}
                   onPress={handlePathConfirm}
                   disabled={loading}
-                  activeOpacity={0.7}
                 >
-                  <Text style={styles.modalButtonConfirmText}>
+                  <ThemedText style={styles.modalButtonConfirmText}>
                     {loading ? "创建中..." : "确认"}
-                  </Text>
-                </TouchableOpacity>
+                  </ThemedText>
+                </Touch>
               </View>
             </View>
           </View>
         </KeyboardAvoidingView>
       </Modal>
-    </ThemedView>
+    </Page>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#000000",
-  },
-
   optionsContainer: {
-    marginTop: StatusBar.currentHeight || 0,
-    gap: 36,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    gap: 32,
   },
   optionCard: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    paddingVertical: 0,
+    alignItems: "center",
   },
   optionIconContainer: {
-    width: 41,
-    height: 41,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: grayScale[300],
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 17,
+    marginRight: 16,
   },
   optionContent: {
     flex: 1,
-    justifyContent: "center",
   },
   optionTitle: {
-    fontSize: 15,
-    fontWeight: "500",
+    fontSize: 17,
+    fontWeight: "600",
     color: "#FFFFFF",
-    marginBottom: 18,
-    letterSpacing: -0.07,
+    marginBottom: 4,
   },
   optionDescription: {
-    fontSize: 15,
-    fontWeight: "400",
-    color: "#999999",
-    letterSpacing: -0.07,
+    fontSize: 14,
+    color: grayScale[200],
   },
-  chevronContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerIcon: {
-    paddingHorizontal: 8,
-  },
+
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
-    justifyContent: "flex-end",
-  },
-  modalContent: {
-    backgroundColor: "#1a1a1a",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 20,
-    paddingBottom: 40,
-    maxHeight: "60%",
-  },
-
-  modalBody: {
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
-  modalHint: {
-    color: "#9E9E9E",
-    marginBottom: 20,
-    lineHeight: 20,
+  modalContent: {
+    backgroundColor: grayScale[400],
+    borderRadius: 24,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.05)",
   },
-
-  pathContainer: {
-    backgroundColor: "#121212",
-    borderRadius: 25,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
+  modalBody: {
+    width: "100%",
+  },
+  modalHint: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
     marginBottom: 24,
   },
-  pathText: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontFamily: "Inter",
+  pathContainer: {
+    backgroundColor: "rgba(255,255,255,0.03)",
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.05)",
   },
-
+  pathText: {
+    color: "#fff",
+    fontSize: 15,
+  },
   pathInput: {
-    backgroundColor: "#1d1d1d",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    color: "#FFFFFF",
+    backgroundColor: grayScale[300],
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    color: "#fff",
     fontSize: 16,
-    minWidth: 70,
+    minWidth: 40,
+    height: 32,
     textAlign: "center",
     marginHorizontal: 2,
-    height: 32,
   },
   modalButtons: {
     flexDirection: "row",
@@ -377,13 +351,13 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
-    paddingVertical: 18,
-    borderRadius: 24,
+    height: 54,
+    borderRadius: 27,
     alignItems: "center",
     justifyContent: "center",
   },
   modalButtonCancel: {
-    backgroundColor: "#141414",
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
   modalButtonConfirm: {
     backgroundColor: "#fff",
@@ -392,13 +366,13 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   modalButtonCancelText: {
-    color: "#FFFFFF",
+    color: "#fff",
     fontWeight: "600",
-    fontSize: 17,
+    fontSize: 16,
   },
   modalButtonConfirmText: {
     color: "#000",
     fontWeight: "600",
-    fontSize: 17,
+    fontSize: 16,
   },
 });

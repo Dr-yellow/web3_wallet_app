@@ -49,6 +49,8 @@ export default function App() {
                         headerBackTitle: " ",
                         headerStyle: { backgroundColor: grayScale[500] },
                         headerTintColor: grayScale[100],
+                        headerTitleStyle: { fontSize: 20 },
+                        headerBackButtonDisplayMode: "minimal",
                       }}
                     >
                       <Stack.Screen

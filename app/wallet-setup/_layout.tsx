@@ -1,8 +1,17 @@
+import { grayScale } from "@/constants/theme/base";
 import { Stack } from "expo-router";
 
 export default function OnboardingLayout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerBackTitle: " ",
+        headerStyle: { backgroundColor: grayScale[500] },
+        headerTintColor: grayScale[100],
+        headerTitleStyle: { fontSize: 20 },
+        headerBackButtonDisplayMode: "minimal",
+      }}
+    >
       <Stack.Screen name="secure-wallet" options={{ headerShown: false }} />
 
       <Stack.Screen

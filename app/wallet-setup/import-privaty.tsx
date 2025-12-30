@@ -1,8 +1,8 @@
 import { ThemedView } from "@/components/themed-view";
+import { grayScale } from "@/constants/theme/base";
 import { useDebouncedNavigation } from "@/hooks/use-debounced-navigation";
 import { setCurrentWallet, validatePrivateKey } from "@/utils/wallet";
 import { encryptMnemonic } from "@/utils/wallet/crypto-help";
-import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { Stack } from "expo-router";
 import { Copy } from "lucide-react-native";
@@ -24,6 +24,7 @@ export default function NameWallet() {
   const router = useDebouncedNavigation();
   const insets = useSafeAreaInsets();
   const [privateKey, setPrivateKey] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleNext = useCallback(async () => {
     const walletId = `wallet_${Date.now()}`;
@@ -47,7 +48,7 @@ export default function NameWallet() {
       pathname: "./select-network",
       params: { privateKey },
     });
-  }, [privateKey]);
+  }, [privateKey, router]);
 
   async function handlePaste() {
     try {
@@ -63,25 +64,13 @@ export default function NameWallet() {
       alert("读取剪贴板时发生错误: " + error.message);
     }
   }
+
   return (
     <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "导入私钥钱包",
-          headerTitleAlign: "center",
-          headerTintColor: "#fff",
-          headerStyle: {
-            backgroundColor: "#000",
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={styles.headerIcon}
-            >
-              <Ionicons name="chevron-back" size={28} color="#fff" />
-            </TouchableOpacity>
-          ),
+          title: "导入单链钱包",
         }}
       />
       <KeyboardAvoidingView
@@ -92,11 +81,17 @@ export default function NameWallet() {
           {/* 钱包名称输入 */}
           <View style={styles.inputSection}>
             <TextInput
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               value={privateKey}
               onChangeText={setPrivateKey}
-              style={styles.textArea}
-              placeholder="请输入私钥"
-              placeholderTextColor="#666666"
+              style={[
+                styles.textArea,
+                { fontSize: privateKey.length > 20 ? 24 : 30 },
+                isFocused && styles.textAreaFocused,
+              ]}
+              placeholder="输入私钥"
+              placeholderTextColor={grayScale[200]}
               multiline
               numberOfLines={4}
               autoCapitalize="none"
@@ -125,7 +120,7 @@ export default function NameWallet() {
           disabled={!privateKey.trim()}
           activeOpacity={0.7}
         >
-          <Text style={styles.nextButtonText}>下一步</Text>
+          <Text style={styles.nextButtonText}>确认</Text>
         </TouchableOpacity>
       </View>
     </ThemedView>
@@ -173,16 +168,18 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   textArea: {
-    backgroundColor: "#2C2C2C",
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 16,
     color: "#FFFFFF",
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#3C3C3C",
-    minHeight: 120,
+    fontSize: 30,
+    minHeight: 80,
     textAlignVertical: "top",
+    borderWidth: 1,
+    borderColor: "transparent",
+  },
+  textAreaFocused: {
+    borderColor: "#fff",
   },
   actionButtons: {
     flexDirection: "row",
@@ -193,10 +190,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: "#141414",
+    backgroundColor: grayScale[300],
   },
   actionButtonText: {
     color: "#fff",

@@ -1,13 +1,8 @@
 import { grayScale } from "@/constants/theme/base";
 import React from "react";
-import {
-  StyleSheet,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
-} from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { ThemedText } from "../themed-text";
-
+import Touch from "./Touch";
 interface ButtonProps {
   title: string;
   onPress?: () => void;
@@ -80,8 +75,7 @@ export function Button({
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
+    <Touch
       onPress={disabled ? undefined : onPress}
       disabled={disabled}
       style={[
@@ -94,7 +88,7 @@ export function Button({
       <ThemedText style={[getTextStyle(), getSizeTextStyle(), textStyle]}>
         {title}
       </ThemedText>
-    </TouchableOpacity>
+    </Touch>
   );
 }
 

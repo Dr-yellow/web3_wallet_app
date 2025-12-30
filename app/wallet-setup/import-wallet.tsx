@@ -1,11 +1,14 @@
+import { ScanIcon } from "@/components/icons";
 import { ThemedView } from "@/components/themed-view";
-
+import { Button } from "@/components/ui/Button";
+import Touch from "@/components/ui/Touch";
 import { SeedPhrase } from "@/components/wallet/SeedPhrase";
 import { colors } from "@/constants/colors";
+import { grayScale } from "@/constants/theme/base";
 import { useDebouncedNavigation } from "@/hooks/use-debounced-navigation";
 import { setCurrentWallet, validateMnemonic } from "@/utils/wallet";
 import { encryptMnemonic } from "@/utils/wallet/crypto-help";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { Stack } from "expo-router";
 import { Copy } from "lucide-react-native";
@@ -138,13 +141,9 @@ export default function ImportWalletScreen() {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity style={styles.headerIcon}>
-              <MaterialCommunityIcons
-                name="scan-helper"
-                size={24}
-                color="#fff"
-              />
-            </TouchableOpacity>
+            <Touch style={styles.headerIcon}>
+              <ScanIcon color="#fff" />
+            </Touch>
           ),
         }}
       />
@@ -154,8 +153,6 @@ export default function ImportWalletScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>请输入您的助记词</Text>
-
           <SeedPhrase
             words={secretWords}
             editable={true}
@@ -172,22 +169,12 @@ export default function ImportWalletScreen() {
       </KeyboardAvoidingView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity
-          style={[
-            styles.importButton,
-            !isFormValid() && styles.importButtonDisabled,
-          ]}
+        <Button
+          disabled={!isFormValid()}
+          size="lg"
+          title="确认"
           onPress={handleImportWallet}
-        >
-          <Text
-            style={[
-              styles.importButtonText,
-              !isFormValid() && styles.importButtonTextDisabled,
-            ]}
-          >
-            确认
-          </Text>
-        </TouchableOpacity>
+        ></Button>
       </View>
     </ThemedView>
   );
@@ -230,10 +217,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: "#141414",
+    backgroundColor: grayScale[300],
   },
   actionButtonText: {
     color: "#fff",

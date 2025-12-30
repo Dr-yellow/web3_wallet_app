@@ -6,6 +6,7 @@ import { getCurrentWalletData, saveWalletAccounts } from "@/utils/wallet";
 import { decryptMnemonic } from "@/utils/wallet/crypto-help";
 import { Ionicons } from "@expo/vector-icons";
 
+import { Button } from "@/components/ui/Button";
 import { derivePrivateKey } from "@/utils/wallet/evm-wallet";
 import { mnemonicToSeedSync } from "@scure/bip39";
 import { Stack } from "expo-router";
@@ -170,15 +171,12 @@ export default function selletAccountScreen() {
       />
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity
-          disabled={loading}
-          style={[styles.nextButton, loading && styles.nextButtonDisabled]}
+        <Button
+          size="lg"
+          title={loading ? "加载中…" : "下一步"}
           onPress={handleNext}
-        >
-          <Text style={[styles.nextButtonText]}>
-            {loading ? "Loading..." : "Next"}
-          </Text>
-        </TouchableOpacity>
+          disabled={loading}
+        />
       </View>
     </ThemedView>
   );
@@ -187,7 +185,6 @@ export default function selletAccountScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
 
   content: {

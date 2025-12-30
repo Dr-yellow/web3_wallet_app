@@ -1,8 +1,9 @@
+import { Page } from "@/components/page/Page";
+import { Button } from "@/components/ui/Button";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function OnboardingScreen() {
   const router = useRouter();
@@ -15,12 +16,10 @@ export default function OnboardingScreen() {
     // 检查是否设置了全局密码
     const globalPassword = await SecureStore.getItemAsync("globalPassword");
     setIsFirstLaunch(!!globalPassword);
-    console.log("globalPassword", globalPassword);
   };
 
   const handleAddAccount = () => {
     // 如果未设置全局密码，跳转到设置密码页面
-    console.log("isFirstLaunch", isFirstLaunch);
     if (!isFirstLaunch) {
       router.push("/wallet-setup/global_password");
       return;
@@ -37,7 +36,7 @@ export default function OnboardingScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["bottom"]}>
+    <Page style={styles.container}>
       <View style={{ flex: 1 }}>
         <Image
           style={styles.top}
@@ -46,7 +45,6 @@ export default function OnboardingScreen() {
         <View
           style={[
             CommomStyle.paddingHorizontal,
-
             {
               marginBottom: 40,
             },
@@ -56,27 +54,19 @@ export default function OnboardingScreen() {
             基于资产语意层构建的新一代区块链钱包
           </Text>
         </View>
-        <View
-          style={[
-            CommomStyle.column,
-            CommomStyle.paddingHorizontal,
-            CommomStyle.gap20,
-          ]}
-        >
-          <TouchableOpacity
-            style={ButtonStyle.primary}
+        <View style={[CommomStyle.column, CommomStyle.paddingHorizontal]}>
+          <Button
+            variant="light"
+            size="lg"
+            title="创建钱包"
             onPress={handleAddAccount}
-            activeOpacity={0.7}
-          >
-            <Text style={ButtonStyle.primaryText}>创建新钱包</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={ButtonStyle.default}
+          />
+          <Button
+            variant="dark"
+            size="lg"
+            title="导入钱包"
             onPress={handleImportAccount}
-            activeOpacity={0.7}
-          >
-            <Text style={ButtonStyle.defaultText}>导入现有钱包</Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
 
@@ -87,7 +77,7 @@ export default function OnboardingScreen() {
           <Text style={styles.bottomText}>《隐私政策》</Text>。
         </Text>
       </View>
-    </SafeAreaView>
+    </Page>
   );
 }
 const ButtonStyle = StyleSheet.create({
@@ -121,15 +111,15 @@ const ButtonStyle = StyleSheet.create({
 
 const CommomStyle = StyleSheet.create({
   column: {
-    flexDirection: "column",
-    alignItems: "center",
+    flex: 1,
+    gap: 11,
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
   },
   paddingHorizontal: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
   },
   h10: {
     height: 10,
@@ -145,10 +135,10 @@ const CommomStyle = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
     flexDirection: "column",
   },
   top: {
+    marginTop: 60,
     width: "100%",
   },
   title: {
@@ -164,7 +154,8 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "500",
     letterSpacing: -0.91,
-    marginHorizontal: 19,
+    marginHorizontal: 16,
+    height: 80,
     // marginBottom: 37,
   },
   bottomText: {

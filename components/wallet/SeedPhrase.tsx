@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import { grayScale } from "@/constants/theme/base";
+import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 interface SeedPhraseProps {
@@ -19,6 +20,7 @@ export function SeedPhrase({
   hidden = false,
 }: SeedPhraseProps) {
   const inputRefs = useRef<(React.ElementRef<typeof TextInput> | null)[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
   const handleWordChange = (index: number, text: string) => {
     if (!editable || !onWordChange) return;
@@ -59,8 +61,17 @@ export function SeedPhrase({
   return (
     <View style={styles.container}>
       {words.map((word, index) => (
-        <View key={index} style={styles.wordItem}>
-          <Text style={styles.wordNumber}>{index + 1}</Text>
+        <View
+          key={index}
+          style={[
+            styles.wordItem,
+            focusedIndex === index && styles.wordItemFocused,
+          ]}
+        >
+          <Text style={styles.wordNumber}>
+            {index < 9 ? "0" : ""}
+            {index + 1}
+          </Text>
           {editable ? (
             <TextInput
               ref={(ref) => {
@@ -72,6 +83,8 @@ export function SeedPhrase({
               onKeyPress={({ nativeEvent }) =>
                 handleKeyPress(index, nativeEvent.key)
               }
+              onFocus={() => setFocusedIndex(index)}
+              onBlur={() => setFocusedIndex(null)}
               placeholder=""
               placeholderTextColor={"#666"}
               autoCapitalize="none"
@@ -101,20 +114,24 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginHorizontal: -4,
     marginBottom: 20,
-    borderWidth: 1,
   },
   wordItem: {
-    width: "31.33%",
+    width: "29.33%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#1d1d1d",
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    margin: "1%",
+    backgroundColor: grayScale[300],
+    borderRadius: 5,
+    paddingVertical: 11,
+    paddingHorizontal: 8,
+    margin: "2%",
+    borderWidth: 1,
+    borderColor: "transparent",
+  },
+  wordItemFocused: {
+    borderColor: "#fff",
   },
   wordNumber: {
-    color: "#666",
+    color: "#999",
     fontSize: 10,
     marginRight: 6,
   },

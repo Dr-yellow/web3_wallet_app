@@ -1,4 +1,5 @@
 import { ThemedView } from "@/components/themed-view";
+import { Button } from "@/components/ui/Button";
 import { useMultiChain } from "@/context/MultiChainContext";
 import { useDebouncedNavigation } from "@/hooks/use-debounced-navigation";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -138,7 +139,7 @@ export default function NameWallet() {
 
       {/* 下一步按钮 */}
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.nextButton,
             (!walletName.trim() || !agreed) && styles.nextButtonDisabled,
@@ -148,7 +149,13 @@ export default function NameWallet() {
           activeOpacity={0.7}
         >
           <Text style={styles.nextButtonText}>下一步</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Button
+          size="lg"
+          title="下一步"
+          onPress={handleNext}
+          disabled={!walletName.trim() || !agreed}
+        ></Button>
       </View>
     </ThemedView>
   );
@@ -229,8 +236,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 24,
     paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#2C2C2C",
   },
   nextButton: {
     height: 64,

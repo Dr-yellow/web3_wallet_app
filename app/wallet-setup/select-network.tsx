@@ -150,7 +150,6 @@ export default function selletAccountScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
 
   content: {
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
   },
   listTitle: {
     color: "#FFF",
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: 500,
     letterSpacing: -1.05,
   },

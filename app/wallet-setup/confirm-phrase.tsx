@@ -1,4 +1,5 @@
 import { ThemedView } from "@/components/themed-view";
+import { Button } from "@/components/ui/Button";
 import { colors } from "@/constants/colors";
 import { useDebouncedNavigation } from "@/hooks/use-debounced-navigation";
 import { encryptMnemonic } from "@/utils/wallet/crypto-help";
@@ -96,20 +97,12 @@ export default function ConfirmPhraseScreen() {
 
   const handleNext = useCallback(async () => {
     if (!isAllSelected()) {
-      Alert.alert(
-        "Select All Words",
-        "Please select all the required words to continue.",
-        [{ text: "OK" }]
-      );
+      Alert.alert("请选择所有单词", "请确保所有单词都已选择", [{ text: "OK" }]);
       return;
     }
 
     if (!isCorrect()) {
-      Alert.alert(
-        "Incorrect Words",
-        "Some words are incorrect. Please try again.",
-        [{ text: "OK" }]
-      );
+      Alert.alert("单词错误", "请确保所有单词都已选择", [{ text: "OK" }]);
       // Reset selections for incorrect words
       const newSelections = { ...selectedWords };
       wordPositions.forEach((wp) => {
@@ -218,7 +211,7 @@ export default function ConfirmPhraseScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.nextButton,
             !isAllSelected() && styles.nextButtonDisabled,
@@ -234,7 +227,13 @@ export default function ConfirmPhraseScreen() {
           >
             {isCreating ? "Creating..." : "Next"}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Button
+          size="lg"
+          title={isCreating ? "创建中…" : "下一步"}
+          onPress={handleNext}
+          disabled={!isAllSelected() || isCreating}
+        ></Button>
       </View>
     </ThemedView>
   );
@@ -243,7 +242,6 @@ export default function ConfirmPhraseScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   header: {
     flexDirection: "row",
