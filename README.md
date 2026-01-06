@@ -1,54 +1,91 @@
-# Welcome to your Expo app 👋
+# Web3 Wallet App (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+一个基于 **Expo（React Native）** 构建的跨平台 **Web3 Wallet App** 开源项目，支持 **iOS / Android**。
 
-## Get started
+项目专注于 **移动端 Web3 钱包的工程实现与可扩展架构设计**，适合希望学习或构建移动端钱包的开发者。
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- 🔐 基于 **BIP39 / BIP44** 的多链助记词钱包创建与管理
+- 🌐 多链支持：**Ethereum (EVM)**、**TRON**
+- 💸 钱包转账（原生币 / 代币）
+- ✍️ 消息签名与签名登录（Sign-in with Wallet）
+- 📱 移动端友好的交互体验（iOS / Android）
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🧱 Supported Chains
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Chain | Status |
+|------|--------|
+| Ethereum / EVM | ✅ Supported |
+| TRON | ✅ Supported |
+| Solana | ⏳ Planned |
+| Sui | ⏳ Planned |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🛠 Tech Stack
 
-When you're ready, run:
+- **Expo / React Native**
+- **TypeScript**
+- Web3 SDKs (EVM / TRON)
+- BIP39 / BIP44 HD Wallet
+
+---
+
+## 🎨 UI / UX Design
+
+- Figma 设计稿：`https://www.figma.com/design/kDKWnoc5TezZFQKdysuRR9/UI---Draft-section--Copy-?node-id=1105-7147&t=8NXnsYFloi42KgPT-1`
+
+---
+
+## 🚀 Getting Started
 
 ```bash
-npm run reset-project
+# install dependencies
+pnpm install
+
+# start dev server
+pnpm expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🗺 Roadmap
 
-To learn more about developing your project with Expo, look at the following resources:
+- [ ] 支持 Solana
+- [ ] 支持 Ledger / 硬件钱包
+- [ ] WalletConnect / dApp 浏览器
+- [ ] 多账户与地址派生管理
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## ☕ Support the Project
 
-Join our community of developers creating universal apps.
+这是一个由个人开发者长期维护的开源项目。
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+如果这个项目对你有帮助，欢迎通过打赏支持作者的持续开发 ❤️
 
+**Donation Addresses**
 
-全部升级到26，然后执行
-npx expo run:ios
+- **Ethereum / EVM**: `0x4bc1466a7793fb721f034c56dafeb897b72f0dee`
+
+- **BTC**: `bc1qcj6qm4gf7qqsyhvg8agpuu4jcu0m3md0fgndx0t7w7vm5zj5gw3scfp6hu`
+
+- **TRON**: `TJuWmzqEKY5vpdh8g28xCEnaekVn8tuyYJ`
+
+- **Solana**: `9cSUBhBZFKDNisfKMrtPgonSBhi1K95bd5Zwot7ViRNU`
+
+  
+
+> Donations help cover development time and infrastructure costs.
+
+---
+
+## 📄 License
+
+MIT License
+
