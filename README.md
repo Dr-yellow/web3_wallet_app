@@ -18,12 +18,12 @@
 
 ## 🧱 Supported Chains
 
-| Chain | Status |
-|------|--------|
+| Chain          | Status       |
+| -------------- | ------------ |
 | Ethereum / EVM | ✅ Supported |
-| TRON | ✅ Supported |
-| Solana | ⏳ Planned |
-| Sui | ⏳ Planned |
+| TRON           | ✅ Supported |
+| Solana         | ⏳ Planned   |
+| Sui            | ⏳ Planned   |
 
 ---
 
@@ -46,10 +46,10 @@
 
 ```bash
 # install dependencies
-pnpm install
+yarn install
 
 # start dev server
-pnpm expo start
+yarn ios
 ```
 
 ---
@@ -79,8 +79,6 @@ pnpm expo start
 
 - **Solana**: `9cSUBhBZFKDNisfKMrtPgonSBhi1K95bd5Zwot7ViRNU`
 
-  
-
 > Donations help cover development time and infrastructure costs.
 
 ---
@@ -88,4 +86,3 @@ pnpm expo start
 ## 📄 License
 
 MIT License
-
