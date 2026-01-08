@@ -39,6 +39,7 @@
 ## 🎨 UI / UX Design
 
 - Figma 设计稿：`https://www.figma.com/design/kDKWnoc5TezZFQKdysuRR9/UI---Draft-section--Copy-?node-id=1105-7147&t=8NXnsYFloi42KgPT-1`
+- Video：`https://www.bilibili.com/video/BV17QiSBtEd8?vd_source=5b8b78a279065c9b4d79d6c0df243610`
 
 ---
 
